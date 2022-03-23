@@ -19,7 +19,6 @@ class DateUtilsTest : FunSpec() {
             DateTime.now().dayOfWeek().get() shouldBe DateTimeConstants.MONDAY
 
             val result = getMonToFriDateString()
-
             result shouldBe "3/21 - 3/25"
         }
 
