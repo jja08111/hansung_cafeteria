@@ -29,7 +29,7 @@ fun HansungCafeteria() {
             topBar = { HansungTopAppBar() }
         ) {
             Column {
-                Tabs(tabs = tabs, pagerState = pagerState)
+                TabBar(tabs = tabs, pagerState = pagerState)
                 HorizontalPager(
                     state = pagerState,
                     count = tabs.size,

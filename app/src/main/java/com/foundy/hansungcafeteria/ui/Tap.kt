@@ -9,27 +9,36 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import kotlinx.coroutines.launch
+import org.joda.time.DateTimeConstants
 import java.lang.Exception
-import java.util.Calendar
 
 @Composable
 fun TapView(weekday: Int) {
-    Text(text = weekday.toLocaleShort())
+    Text(text = weekday.toWeekLocaleShort())
 }
 
 sealed class TabItem(private val weekday: Int, val screen: @Composable () -> Unit) {
-    fun weekdayString(): String = weekday.toLocaleShort()
+    fun weekdayString(): String = weekday.toWeekLocaleShort()
 
-    object Monday : TabItem(Calendar.MONDAY, { TapView(weekday = Calendar.MONDAY) })
-    object Tuesday : TabItem(Calendar.TUESDAY, { TapView(weekday = Calendar.TUESDAY) })
-    object Wednesday : TabItem(Calendar.WEDNESDAY, { TapView(weekday = Calendar.WEDNESDAY) })
-    object Thursday : TabItem(Calendar.THURSDAY, { TapView(weekday = Calendar.THURSDAY) })
-    object Friday : TabItem(Calendar.FRIDAY, { TapView(weekday = Calendar.FRIDAY) })
+    object Monday :
+        TabItem(DateTimeConstants.MONDAY, { TapView(weekday = DateTimeConstants.MONDAY) })
+
+    object Tuesday :
+        TabItem(DateTimeConstants.TUESDAY, { TapView(weekday = DateTimeConstants.TUESDAY) })
+
+    object Wednesday :
+        TabItem(DateTimeConstants.WEDNESDAY, { TapView(weekday = DateTimeConstants.WEDNESDAY) })
+
+    object Thursday :
+        TabItem(DateTimeConstants.THURSDAY, { TapView(weekday = DateTimeConstants.THURSDAY) })
+
+    object Friday :
+        TabItem(DateTimeConstants.FRIDAY, { TapView(weekday = DateTimeConstants.FRIDAY) })
 }
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
 @Composable
-fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
+fun TabBar(tabs: List<TabItem>, pagerState: PagerState) {
     val scope = rememberCoroutineScope()
     TabRow(
         selectedTabIndex = pagerState.currentPage,
@@ -55,17 +64,17 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 }
 
 /**
- * Using for [Calendar.DAY_OF_WEEK] values.
+ * Using for [DateTimeConstants] values.
  */
-fun Int.toLocaleShort(): String {
+fun Int.toWeekLocaleShort(): String {
     return when (this) {
-        Calendar.MONDAY -> "월"
-        Calendar.TUESDAY -> "화"
-        Calendar.WEDNESDAY -> "수"
-        Calendar.THURSDAY -> "목"
-        Calendar.FRIDAY -> "금"
-        Calendar.SATURDAY -> "토"
-        Calendar.SUNDAY -> "일"
+        DateTimeConstants.MONDAY -> "월"
+        DateTimeConstants.TUESDAY -> "화"
+        DateTimeConstants.WEDNESDAY -> "수"
+        DateTimeConstants.THURSDAY -> "목"
+        DateTimeConstants.FRIDAY -> "금"
+        DateTimeConstants.SATURDAY -> "토"
+        DateTimeConstants.SUNDAY -> "일"
         else -> throw Exception("잘못된 값을 전달했습니다. 요일을 맞게 전달했는지 확인하세요.")
     }
 }
