@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -12,17 +13,18 @@ import com.foundy.hansungcafeteria.ui.theme.HansungCafeteriaTheme
 import com.foundy.hansungcafeteria.util.getMonToFriDateString
 import com.google.accompanist.pager.*
 
+val tabs = listOf(
+    TabItem.Monday,
+    TabItem.Tuesday,
+    TabItem.Wednesday,
+    TabItem.Thursday,
+    TabItem.Friday
+)
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HansungCafeteria() {
     HansungCafeteriaTheme {
-        val tabs = listOf(
-            TabItem.Monday,
-            TabItem.Tuesday,
-            TabItem.Wednesday,
-            TabItem.Thursday,
-            TabItem.Friday
-        )
         val pagerState = rememberPagerState()
 
         Scaffold(
@@ -45,7 +47,8 @@ fun HansungCafeteria() {
 @Composable
 fun HansungTopAppBar() {
     TopAppBar(contentPadding = PaddingValues(horizontal = 24.dp)) {
-        Text(text = "한성대 학생 식당 (${getMonToFriDateString()})")
+        val dateDurationString = remember { getMonToFriDateString() }
+        Text(text = "한성대 학생 식당 ($dateDurationString)")
     }
 }
 
