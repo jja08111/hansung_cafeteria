@@ -66,6 +66,8 @@ dependencies {
     implementation 'net.danlew:android.joda:2.10.13'
     implementation 'androidx.startup:startup-runtime:1.1.1'
 
+    implementation 'org.jsoup:jsoup:1.14.3'
+
     testImplementation 'io.kotlintest:kotlintest-runner-junit5:3.3.0'
 
     testImplementation 'junit:junit:4.13.2'
