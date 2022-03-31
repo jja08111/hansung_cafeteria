@@ -1,8 +1,7 @@
 package com.foundy.hansungcafeteria.ui
 
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -14,7 +13,9 @@ import java.lang.Exception
 
 @Composable
 fun TapView(weekday: Int) {
-    Text(text = weekday.toWeekLocaleShort())
+    val tapViewModel by remember { mutableStateOf(TapViewModel()) }
+
+    Text(text = tapViewModel.getDailyMenu(weekday).toString())
 }
 
 sealed class TabItem(private val weekday: Int, val screen: @Composable () -> Unit) {
