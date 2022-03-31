@@ -12,29 +12,40 @@ import org.joda.time.DateTimeConstants
 import java.lang.Exception
 
 @Composable
-fun TapView(weekday: Int) {
-    val tapViewModel by remember { mutableStateOf(TapViewModel()) }
-
-    Text(text = tapViewModel.getDailyMenu(weekday).toString())
+fun TapView(weekday: Int, homeViewModel: HomeViewModel) {
+    Text(text = homeViewModel.getDailyMenu(weekday).toString())
 }
 
-sealed class TabItem(private val weekday: Int, val screen: @Composable () -> Unit) {
+sealed class TabItem(
+    private val weekday: Int,
+    val screen: @Composable (homeViewModel: HomeViewModel) -> Unit
+) {
     fun weekdayString(): String = weekday.toWeekLocaleShort()
 
     object Monday :
-        TabItem(DateTimeConstants.MONDAY, { TapView(weekday = DateTimeConstants.MONDAY) })
+        TabItem(
+            DateTimeConstants.MONDAY,
+            { TapView(weekday = DateTimeConstants.MONDAY, homeViewModel = it) })
 
     object Tuesday :
-        TabItem(DateTimeConstants.TUESDAY, { TapView(weekday = DateTimeConstants.TUESDAY) })
+        TabItem(
+            DateTimeConstants.TUESDAY,
+            { TapView(weekday = DateTimeConstants.TUESDAY, homeViewModel = it) })
 
     object Wednesday :
-        TabItem(DateTimeConstants.WEDNESDAY, { TapView(weekday = DateTimeConstants.WEDNESDAY) })
+        TabItem(
+            DateTimeConstants.WEDNESDAY,
+            { TapView(weekday = DateTimeConstants.WEDNESDAY, homeViewModel = it) })
 
     object Thursday :
-        TabItem(DateTimeConstants.THURSDAY, { TapView(weekday = DateTimeConstants.THURSDAY) })
+        TabItem(
+            DateTimeConstants.THURSDAY,
+            { TapView(weekday = DateTimeConstants.THURSDAY, homeViewModel = it) })
 
     object Friday :
-        TabItem(DateTimeConstants.FRIDAY, { TapView(weekday = DateTimeConstants.FRIDAY) })
+        TabItem(
+            DateTimeConstants.FRIDAY,
+            { TapView(weekday = DateTimeConstants.FRIDAY, homeViewModel = it) })
 }
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)

@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +28,7 @@ val tabs = listOf(
 fun HansungCafeteria() {
     HansungCafeteriaTheme {
         val pagerState = rememberPagerState()
+        val homeViewModel by remember { mutableStateOf(HomeViewModel()) }
 
         Scaffold(
             topBar = { HansungTopAppBar() }
@@ -37,7 +40,7 @@ fun HansungCafeteria() {
                     count = tabs.size,
                     modifier = Modifier.fillMaxHeight()
                 ) {
-                    tabs[it].screen()
+                    tabs[it].screen(homeViewModel)
                 }
             }
         }

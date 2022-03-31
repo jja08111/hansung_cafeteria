@@ -1,11 +1,15 @@
 package com.foundy.hansungcafeteria.repository
 
+import android.util.Log
 import com.foundy.hansungcafeteria.model.DailyMenuModel
 import com.foundy.hansungcafeteria.model.Menu
 import com.foundy.hansungcafeteria.model.MenuDivision
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
-import java.lang.NumberFormatException
 
+
+@Suppress("BlockingMethodInNonBlockingContext")
 class HansungWebScraper {
     /**
      * 식단 정보를 스크래핑 해온후 매핑 객체를 반환한다.
@@ -16,10 +20,12 @@ class HansungWebScraper {
      * 3. tr에서 th가 있으면 해당 날짜이고 없으면 이전과 동일한 날짜이다.(rowspan=2임)
      */
     // TODO: 메인 쓰레드가 아닌 다른 쓰레드에서 해야함
-    fun searchCafeteria(url: String? = null): List<DailyMenuModel>? {
-        val doc = Jsoup.connect(
-            url ?: "https://www.hansung.ac.kr/hansung/1920/subview.do"
-        ).get()
+    suspend fun searchCafeteria(url: String? = null): List<DailyMenuModel>? {
+        val doc = withContext(Dispatchers.IO) {
+            Jsoup.connect(
+                url ?: "https://www.hansung.ac.kr/hansung/1920/subview.do"
+            ).get()
+        }
         val tableBody = doc.getElementsByTag("tbody").first()
         val tableRows = tableBody?.children()
         val result = mutableListOf<DailyMenuModel>()
