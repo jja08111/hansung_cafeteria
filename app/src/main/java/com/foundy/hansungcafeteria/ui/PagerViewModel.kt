@@ -33,7 +33,6 @@ class PagerViewModel : ViewModel() {
     private fun adaptWeekDayToDateConstant(
         hansungMenuList: List<DailyMenuModel>
     ): List<DailyMenuModel> {
-        Log.e("dsf", "getDailyMenu 호출됨!")
         if (hansungMenuList.isEmpty()) {
             return emptyList()
         }
