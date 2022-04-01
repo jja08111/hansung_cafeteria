@@ -1,6 +1,5 @@
 package com.foundy.hansungcafeteria.repository
 
-import android.util.Log
 import com.foundy.hansungcafeteria.model.DailyMenuModel
 import com.foundy.hansungcafeteria.model.Menu
 import com.foundy.hansungcafeteria.model.MenuDivision
