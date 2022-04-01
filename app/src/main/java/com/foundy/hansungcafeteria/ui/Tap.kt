@@ -62,6 +62,7 @@ fun TapView(weekday: Int, pagerViewModel: PagerViewModel) {
                     style = MaterialTheme.typography.subtitle1.copy(
                         color = Color.Black.copy(0.6F)
                     ),
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
                 for (division in dailyMenu.menuDivisions) {
                     Card(
