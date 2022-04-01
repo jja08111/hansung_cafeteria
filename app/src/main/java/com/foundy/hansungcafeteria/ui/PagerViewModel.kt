@@ -15,7 +15,7 @@ class PagerViewModel : ViewModel() {
     /**
      * [DateTimeConstants]의 주 시작일에 맞게 일, 월, 화, ... , 토요일의 한성대 식단이 들어있는 리스트이다.
      */
-    val dailyMenus = mutableStateListOf<DailyMenuModel?>()
+    val dailyMenus = mutableStateListOf<DailyMenuModel>()
 
     init {
         viewModelScope.launch {

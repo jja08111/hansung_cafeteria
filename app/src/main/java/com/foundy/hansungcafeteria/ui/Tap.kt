@@ -1,7 +1,8 @@
 package com.foundy.hansungcafeteria.ui
 
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -39,15 +40,35 @@ fun HansungHorizontalPager(pagerState: PagerState) {
 
 @Composable
 fun TapView(weekday: Int, pagerViewModel: PagerViewModel) {
-    val dailyMenus = remember { pagerViewModel.dailyMenus }
+    val dailyMenuList = remember { pagerViewModel.dailyMenus }
 
-    if (dailyMenus.isEmpty()) {
+    if (dailyMenuList.isEmpty()) {
         Text("로딩중...")
     } else {
-        Text(
-            modifier = Modifier.padding(16.dp),
-            text = dailyMenus[weekday].toString()
-        )
+        val scrollState = rememberScrollState()
+        val dailyMenu = dailyMenuList[weekday]
+
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .verticalScroll(scrollState),
+        ) {
+            Text(dailyMenu.date)
+            for (division in dailyMenu.menuDivisions) {
+                Text(division.name)
+                Column {
+                    for (menus in division.menus) {
+                        Row {
+                            Text(menus.name, modifier = Modifier.padding(end = 8.dp))
+                            Text(menus.price.toString())
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
 
