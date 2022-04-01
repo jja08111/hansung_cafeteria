@@ -48,21 +48,50 @@ fun TapView(weekday: Int, pagerViewModel: PagerViewModel) {
         val scrollState = rememberScrollState()
         val dailyMenu = dailyMenuList[weekday]
 
-        Column(
+        Box(
             modifier = Modifier
-                .padding(16.dp)
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .verticalScroll(scrollState),
         ) {
-            Text(dailyMenu.date)
-            for (division in dailyMenu.menuDivisions) {
-                Text(division.name)
-                Column {
-                    for (menus in division.menus) {
-                        Row {
-                            Text(menus.name, modifier = Modifier.padding(end = 8.dp))
-                            Text(menus.price.toString())
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    dailyMenu.date,
+                    style = MaterialTheme.typography.subtitle1.copy(
+                        color = Color.Black.copy(0.6F)
+                    ),
+                )
+                for (division in dailyMenu.menuDivisions) {
+                    Card(
+                        elevation = 4.dp,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                division.name,
+                                style = MaterialTheme.typography.h5,
+                                modifier = Modifier.padding(bottom = 16.dp)
+                            )
+                            Column {
+                                for (menus in division.menus) {
+                                    Row(
+                                        modifier = Modifier
+                                            .padding(vertical = 4.dp)
+                                            .fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Text(
+                                            menus.name,
+                                            modifier = Modifier.padding(end = 8.dp)
+                                        )
+                                        Text("${menus.price}원")
+                                    }
+                                }
+                            }
                         }
                     }
                 }
