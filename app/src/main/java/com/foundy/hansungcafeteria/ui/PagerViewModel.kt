@@ -7,7 +7,7 @@ import com.foundy.hansungcafeteria.model.DailyMenuModel
 import com.foundy.hansungcafeteria.repository.HansungWebScraper
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class PagerViewModel : ViewModel() {
     private val hansungWebScraper = HansungWebScraper()
     private val dailyMenus = mutableStateListOf<DailyMenuModel?>()
 

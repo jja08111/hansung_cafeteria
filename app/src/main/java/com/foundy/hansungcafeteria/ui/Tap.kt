@@ -1,51 +1,75 @@
 package com.foundy.hansungcafeteria.ui
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import kotlinx.coroutines.launch
 import org.joda.time.DateTimeConstants
 import java.lang.Exception
 
+val tabs = listOf(
+    TabItem.Monday,
+    TabItem.Tuesday,
+    TabItem.Wednesday,
+    TabItem.Thursday,
+    TabItem.Friday
+)
+
+@ExperimentalPagerApi
 @Composable
-fun TapView(weekday: Int, homeViewModel: HomeViewModel) {
-    Text(text = homeViewModel.getDailyMenu(weekday).toString())
+fun HansungHorizontalPager(pagerState: PagerState) {
+    val homeViewModel by remember { mutableStateOf(PagerViewModel()) }
+
+    HorizontalPager(
+        state = pagerState,
+        count = tabs.size,
+        modifier = Modifier.fillMaxHeight()
+    ) {
+        tabs[it].screen(homeViewModel)
+    }
+}
+
+@Composable
+fun TapView(weekday: Int, pagerViewModel: PagerViewModel) {
+    Text(text = pagerViewModel.getDailyMenu(weekday).toString())
 }
 
 sealed class TabItem(
     private val weekday: Int,
-    val screen: @Composable (homeViewModel: HomeViewModel) -> Unit
+    val screen: @Composable (pagerViewModel: PagerViewModel) -> Unit
 ) {
     fun weekdayString(): String = weekday.toWeekLocaleShort()
 
     object Monday :
         TabItem(
             DateTimeConstants.MONDAY,
-            { TapView(weekday = DateTimeConstants.MONDAY, homeViewModel = it) })
+            { TapView(weekday = DateTimeConstants.MONDAY, pagerViewModel = it) })
 
     object Tuesday :
         TabItem(
             DateTimeConstants.TUESDAY,
-            { TapView(weekday = DateTimeConstants.TUESDAY, homeViewModel = it) })
+            { TapView(weekday = DateTimeConstants.TUESDAY, pagerViewModel = it) })
 
     object Wednesday :
         TabItem(
             DateTimeConstants.WEDNESDAY,
-            { TapView(weekday = DateTimeConstants.WEDNESDAY, homeViewModel = it) })
+            { TapView(weekday = DateTimeConstants.WEDNESDAY, pagerViewModel = it) })
 
     object Thursday :
         TabItem(
             DateTimeConstants.THURSDAY,
-            { TapView(weekday = DateTimeConstants.THURSDAY, homeViewModel = it) })
+            { TapView(weekday = DateTimeConstants.THURSDAY, pagerViewModel = it) })
 
     object Friday :
         TabItem(
             DateTimeConstants.FRIDAY,
-            { TapView(weekday = DateTimeConstants.FRIDAY, homeViewModel = it) })
+            { TapView(weekday = DateTimeConstants.FRIDAY, pagerViewModel = it) })
 }
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
