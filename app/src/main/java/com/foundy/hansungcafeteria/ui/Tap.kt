@@ -89,7 +89,14 @@ fun TapView(weekday: Int, pagerViewModel: PagerViewModel) {
                                             menus.name,
                                             modifier = Modifier.padding(end = 8.dp)
                                         )
-                                        Text("${menus.priceWithComma}원")
+                                        Text(
+                                            "${menus.priceWithComma}원",
+                                            style = MaterialTheme.typography.body1.copy(
+                                                color = MaterialTheme.colors.onSurface.copy(
+                                                    alpha = 0.6F
+                                                )
+                                            )
+                                        )
                                     }
                                 }
                             }
