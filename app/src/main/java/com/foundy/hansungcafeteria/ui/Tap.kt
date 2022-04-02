@@ -78,7 +78,7 @@ fun TapView(weekday: Int, pagerViewModel: PagerViewModel) {
                                 modifier = Modifier.padding(bottom = 16.dp)
                             )
                             Column {
-                                for (menus in division.menus) {
+                                for (menu in division.menus) {
                                     Row(
                                         modifier = Modifier
                                             .padding(vertical = 4.dp)
@@ -86,11 +86,11 @@ fun TapView(weekday: Int, pagerViewModel: PagerViewModel) {
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(
-                                            menus.name,
+                                            menu.name,
                                             modifier = Modifier.padding(end = 8.dp)
                                         )
                                         Text(
-                                            "${menus.priceWithComma}원",
+                                            "${menu.priceWithComma}원",
                                             style = MaterialTheme.typography.body1.copy(
                                                 color = MaterialTheme.colors.onSurface.copy(
                                                     alpha = 0.6F
