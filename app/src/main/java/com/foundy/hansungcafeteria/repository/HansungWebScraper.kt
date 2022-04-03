@@ -5,8 +5,9 @@ import com.foundy.hansungcafeteria.model.Menu
 import com.foundy.hansungcafeteria.model.MenuDivision
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 import org.jsoup.Jsoup
-
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class HansungWebScraper {
@@ -31,7 +32,15 @@ class HansungWebScraper {
         if (tableRows == null) return null
 
         for (tableRow in tableRows) {
-            val dateString = tableRow.getElementsByTag("th").first()?.text()
+            val rowDateTimeString = tableRow
+                .getElementsByTag("th")
+                .first()
+                ?.text()
+                ?.split(" ")
+                ?.first()
+            val formatter: DateTimeFormatter = DateTimeFormat.forPattern("yyyy.MM.dd")
+            val dateTime =
+                if (rowDateTimeString != null) formatter.parseDateTime(rowDateTimeString) else null
             val tableDataList = tableRow.getElementsByTag("td")
             val rowMenus = tableDataList[1].text().split(" ")
             val divisionName = tableDataList[0].text()
@@ -53,8 +62,8 @@ class HansungWebScraper {
                 add(MenuDivision(divisionName, menus))
             }
 
-            if (dateString != null) {
-                result.add(DailyMenuModel(dateString, divisions))
+            if (dateTime != null) {
+                result.add(DailyMenuModel(dateTime, divisions))
             } else { // 날짜가 바뀌지 않은 경우 식단 구분을 이전 날짜 결과에 추가한다.
                 val lastModel = result.last()
                 val newDivisions = mutableListOf<MenuDivision>().apply {

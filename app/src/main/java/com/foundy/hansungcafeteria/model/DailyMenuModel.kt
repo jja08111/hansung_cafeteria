@@ -1,9 +1,10 @@
 package com.foundy.hansungcafeteria.model
 
+import org.joda.time.DateTime
 import java.text.NumberFormat
 import java.util.*
 
-data class DailyMenuModel(val date: String, val menuDivisions: List<MenuDivision>)
+data class DailyMenuModel(val date: DateTime, val menuDivisions: List<MenuDivision>)
 
 data class MenuDivision(val name: String, val menus: List<Menu>)
 

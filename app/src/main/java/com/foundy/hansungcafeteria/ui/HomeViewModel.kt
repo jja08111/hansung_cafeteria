@@ -8,13 +8,26 @@ import com.foundy.hansungcafeteria.repository.HansungWebScraper
 import kotlinx.coroutines.launch
 import org.joda.time.DateTimeConstants
 
-class PagerViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
     private val hansungWebScraper = HansungWebScraper()
 
     /**
      * [DateTimeConstants]의 주 시작일에 맞게 일, 월, 화, ... , 토요일의 한성대 식단이 들어있는 리스트이다.
      */
     val dailyMenus = mutableStateListOf<DailyMenuModel>()
+
+    /**
+     * 식단 정보의 월요일부터 금요일까지의 기간을 문자열로 나타낸다.
+     */
+    val currentDuration: String
+        get() {
+            if (dailyMenus.isEmpty()) return ""
+            return "(" +
+                    dailyMenus[DateTimeConstants.MONDAY].date.toString("M/dd") +
+                    " - " +
+                    dailyMenus[DateTimeConstants.FRIDAY].date.toString("M/dd") +
+                    ")"
+        }
 
     init {
         viewModelScope.launch {
