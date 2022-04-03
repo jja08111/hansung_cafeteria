@@ -18,7 +18,6 @@ class HansungWebScraper {
      * 2. tbody에서 tr들을 찾는다.
      * 3. tr에서 th가 있으면 해당 날짜이고 없으면 이전과 동일한 날짜이다.(rowspan=2임)
      */
-    // TODO: 메인 쓰레드가 아닌 다른 쓰레드에서 해야함
     suspend fun searchCafeteria(url: String? = null): List<DailyMenuModel>? {
         val doc = withContext(Dispatchers.IO) {
             Jsoup.connect(
