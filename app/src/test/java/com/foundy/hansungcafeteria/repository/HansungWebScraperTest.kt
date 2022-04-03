@@ -1,12 +1,13 @@
 package com.foundy.hansungcafeteria.repository
 
-import io.kotlintest.shouldBe
+import io.kotlintest.matchers.collections.shouldBeEmpty
+import io.kotlintest.matchers.collections.shouldNotBeEmpty
 import io.kotlintest.specs.FunSpec
 
 class HansungWebScraperTest : FunSpec({
     test("searchCafeteria works correctly if the url is default") {
         val dailyMenus = HansungWebScraper().searchCafeteria()
-        dailyMenus?.isNotEmpty() shouldBe true
+        dailyMenus?.shouldNotBeEmpty()
     }
 
     test("searchCafeteria returns an empty Menus if date is holiday") {
@@ -15,11 +16,11 @@ class HansungWebScraperTest : FunSpec({
         val dailyMenus = HansungWebScraper().searchCafeteria(url = url)
 
         dailyMenus?.get(0)?.menuDivisions?.forEach {
-            it.menus.isEmpty() shouldBe false
+            it.menus.shouldNotBeEmpty()
         }
         // 2022년 3월 1일은 화요일이다.
         dailyMenus?.get(1)?.menuDivisions?.forEach {
-            it.menus.isEmpty() shouldBe true
+            it.menus.shouldBeEmpty()
         }
     }
 })
