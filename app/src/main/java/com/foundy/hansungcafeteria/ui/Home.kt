@@ -16,16 +16,14 @@ import com.google.accompanist.pager.*
 @Composable
 fun HansungCafeteria() {
     HansungCafeteriaTheme {
-        val pagerState = rememberPagerState()
         val homeViewModel by remember { mutableStateOf(HomeViewModel()) }
 
         Scaffold(
             topBar = { HansungTopAppBar(homeViewModel = homeViewModel) }
         ) {
             Column {
-                TabBar(tabs = tabs, pagerState = pagerState)
+                TabBar(tabs = tabs, homeViewModel = homeViewModel)
                 HansungHorizontalPager(
-                    pagerState = pagerState,
                     homeViewModel = homeViewModel
                 )
             }

@@ -13,7 +13,6 @@ import com.foundy.hansungcafeteria.model.Menu
 import com.foundy.hansungcafeteria.model.MenuDivision
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import kotlinx.coroutines.launch
 import org.joda.time.DateTimeConstants
@@ -29,9 +28,9 @@ val tabs = listOf(
 
 @ExperimentalPagerApi
 @Composable
-fun HansungHorizontalPager(pagerState: PagerState, homeViewModel: HomeViewModel) {
+fun HansungHorizontalPager(homeViewModel: HomeViewModel) {
     HorizontalPager(
-        state = pagerState,
+        state = homeViewModel.pagerState,
         count = tabs.size,
         modifier = Modifier.fillMaxHeight()
     ) {
@@ -148,8 +147,10 @@ sealed class TabItem(
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
 @Composable
-fun TabBar(tabs: List<TabItem>, pagerState: PagerState) {
+fun TabBar(tabs: List<TabItem>, homeViewModel: HomeViewModel) {
+    val pagerState = homeViewModel.pagerState
     val scope = rememberCoroutineScope()
+
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         backgroundColor = MaterialTheme.colors.primaryVariant,
