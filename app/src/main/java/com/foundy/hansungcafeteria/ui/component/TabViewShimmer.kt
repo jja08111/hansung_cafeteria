@@ -3,7 +3,9 @@ package com.foundy.hansungcafeteria.ui.component
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,10 +46,13 @@ fun TabViewShimmer() {
 
 @Composable
 private fun ShimmerTabView(brush: Brush) {
+    val scrollState = rememberScrollState()
+
     Box(
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
+            .verticalScroll(scrollState)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -114,7 +119,7 @@ private fun ShimmerCardItem(brush: Brush) {
 @Composable
 @Preview(showBackground = true)
 fun ShimmerTabViewPreview() {
-    ShimmerCardItem(
+    ShimmerTabView(
         brush = Brush.linearGradient(
             listOf(
                 Color.LightGray.copy(alpha = 0.6f),
