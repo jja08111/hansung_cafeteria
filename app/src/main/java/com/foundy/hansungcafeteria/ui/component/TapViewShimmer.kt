@@ -39,6 +39,11 @@ fun TapViewShimmer() {
         end = Offset(x = translateAnimation.value, y = translateAnimation.value)
     )
 
+    ShimmerTabView(brush = brush)
+}
+
+@Composable
+private fun ShimmerTabView(brush: Brush) {
     Box(
         modifier = Modifier
             .fillMaxHeight()
@@ -56,7 +61,7 @@ fun TapViewShimmer() {
 }
 
 @Composable
-fun ShimmerHeadlineText(brush: Brush) {
+private fun ShimmerHeadlineText(brush: Brush) {
     Column {
         Spacer(
             modifier = Modifier.padding(bottom = 4.dp)
@@ -74,7 +79,7 @@ fun ShimmerHeadlineText(brush: Brush) {
 }
 
 @Composable
-fun ShimmerCardItem(brush: Brush) {
+private fun ShimmerCardItem(brush: Brush) {
     HansungCard {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -104,6 +109,20 @@ fun ShimmerCardItem(brush: Brush) {
             }
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ShimmerTabViewPreview() {
+    ShimmerCardItem(
+        brush = Brush.linearGradient(
+            listOf(
+                Color.LightGray.copy(alpha = 0.6f),
+                Color.LightGray.copy(alpha = 0.2f),
+                Color.LightGray.copy(alpha = 0.6f),
+            )
+        )
+    )
 }
 
 @Composable
