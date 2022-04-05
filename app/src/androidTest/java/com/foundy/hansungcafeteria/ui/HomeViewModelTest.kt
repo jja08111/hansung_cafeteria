@@ -1,6 +1,7 @@
 package com.foundy.hansungcafeteria.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -42,13 +43,15 @@ class HomeViewModelTest {
     fun currentPageShouldBeZero_whenDateOfFirstDataIsTomorrow() {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 3, 27, 14, 0).millis)
 
+        val scaffoldState = createMockScaffoldState()
         val homeViewModel = HomeViewModel(
+            scaffoldState = scaffoldState,
             searchUrl = URL,
             coroutineContext = coroutineContext
         )
 
         composeTestRule.setContent {
-            FakeHomeScreen(homeViewModel = homeViewModel)
+            FakeHomeScreen(homeViewModel = homeViewModel, scaffoldState = scaffoldState)
         }
 
         runBlocking {
@@ -64,13 +67,15 @@ class HomeViewModelTest {
     fun currentPageShouldBeZero_whenTodayIsMondayAndDataInRange() {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 3, 28, 14, 0).millis)
 
+        val scaffoldState = createMockScaffoldState()
         val homeViewModel = HomeViewModel(
+            scaffoldState = scaffoldState,
             searchUrl = URL,
             coroutineContext = coroutineContext
         )
 
         composeTestRule.setContent {
-            FakeHomeScreen(homeViewModel = homeViewModel)
+            FakeHomeScreen(homeViewModel = homeViewModel, scaffoldState = scaffoldState)
         }
 
         runBlocking {
@@ -86,13 +91,15 @@ class HomeViewModelTest {
     fun currentPageShouldBeOne_whenTodayIsTuesdayAndDataInRange() {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 3, 29, 14, 0).millis)
 
+        val scaffoldState = createMockScaffoldState()
         val homeViewModel = HomeViewModel(
+            scaffoldState = scaffoldState,
             searchUrl = URL,
             coroutineContext = coroutineContext
         )
 
         composeTestRule.setContent {
-            FakeHomeScreen(homeViewModel = homeViewModel)
+            FakeHomeScreen(homeViewModel = homeViewModel, scaffoldState = scaffoldState)
         }
 
         runBlocking {
@@ -108,13 +115,15 @@ class HomeViewModelTest {
     fun currentPageShouldBeFour_whenDateOfLastDataIsYesterday() {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 4, 4, 14, 0).millis)
 
+        val scaffoldState = createMockScaffoldState()
         val homeViewModel = HomeViewModel(
+            scaffoldState = scaffoldState,
             searchUrl = URL,
             coroutineContext = coroutineContext
         )
 
         composeTestRule.setContent {
-            FakeHomeScreen(homeViewModel = homeViewModel)
+            FakeHomeScreen(homeViewModel = homeViewModel, scaffoldState = scaffoldState)
         }
 
         runBlocking {
@@ -127,12 +136,21 @@ class HomeViewModelTest {
 
     @OptIn(ExperimentalPagerApi::class)
     @Composable
-    private fun FakeHomeScreen(homeViewModel: HomeViewModel) {
-        Column {
-            TabBar(tabs = tabs, homeViewModel = homeViewModel)
-            HansungHorizontalPager(
-                homeViewModel = homeViewModel
-            )
+    private fun FakeHomeScreen(homeViewModel: HomeViewModel, scaffoldState: ScaffoldState) {
+        Scaffold(
+            scaffoldState = scaffoldState,
+            topBar = { HansungTopAppBar(homeViewModel = homeViewModel) }
+        ) {
+            Column {
+                TabBar(tabs = tabs, homeViewModel = homeViewModel)
+                HansungHorizontalPager(
+                    homeViewModel = homeViewModel
+                )
+            }
         }
+    }
+
+    private fun createMockScaffoldState(): ScaffoldState {
+        return ScaffoldState(DrawerState(DrawerValue.Closed), SnackbarHostState())
     }
 }
