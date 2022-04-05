@@ -89,7 +89,7 @@ fun ShimmerCardItem(brush: Brush) {
             Column {
                 for (i in 1..10) {
                     Spacer(
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        modifier = Modifier.padding(bottom = 6.dp)
                     )
                     Spacer(
                         modifier = Modifier
@@ -98,7 +98,7 @@ fun ShimmerCardItem(brush: Brush) {
                             .background(brush)
                     )
                     Spacer(
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        modifier = Modifier.padding(bottom = 6.dp)
                     )
                 }
             }
