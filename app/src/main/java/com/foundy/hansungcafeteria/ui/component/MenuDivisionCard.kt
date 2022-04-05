@@ -1,4 +1,4 @@
-package com.foundy.hansungcafeteria.ui.components
+package com.foundy.hansungcafeteria.ui.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme

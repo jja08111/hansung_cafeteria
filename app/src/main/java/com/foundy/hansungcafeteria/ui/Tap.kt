@@ -8,8 +8,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.foundy.hansungcafeteria.ui.components.MenuDivisionCard
-import com.foundy.hansungcafeteria.ui.components.TapViewShimmer
+import com.foundy.hansungcafeteria.ui.component.MenuDivisionCard
+import com.foundy.hansungcafeteria.ui.component.TapViewShimmer
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset

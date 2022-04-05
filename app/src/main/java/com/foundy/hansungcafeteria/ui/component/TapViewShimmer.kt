@@ -1,4 +1,4 @@
-package com.foundy.hansungcafeteria.ui.components
+package com.foundy.hansungcafeteria.ui.component
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
