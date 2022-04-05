@@ -1,17 +1,27 @@
+@file:Suppress("OPT_IN_IS_NOT_ENABLED")
+
 package com.foundy.hansungcafeteria.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.foundy.hansungcafeteria.exception.InternetNotConnectedException
 import com.google.accompanist.pager.ExperimentalPagerApi
+import io.mockk.every
+import io.mockk.mockkStatic
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope.coroutineContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.joda.time.DateTime
 import org.joda.time.DateTimeUtils
 import org.joda.time.DateTimeZone
+import org.jsoup.Jsoup
 import org.junit.Assert.assertEquals
 import org.junit.BeforeClass
 import org.junit.Rule
@@ -130,6 +140,38 @@ class HomeViewModelTest {
             homeViewModel.apply {
                 job?.join()
                 assertEquals(pagerState.currentPage, 4)
+            }
+        }
+    }
+
+    @OptIn(ExperimentalPagerApi::class)
+    @Test
+    fun showErrorPage_whenInternetIsNotConnected() {
+        mockkStatic(Jsoup::class)
+        every { Jsoup.connect(URL) } throws InternetNotConnectedException()
+
+        val scaffoldState = createMockScaffoldState()
+        val homeViewModel = HomeViewModel(
+            scaffoldState = scaffoldState,
+            searchUrl = URL,
+            coroutineContext = coroutineContext,
+        )
+
+        composeTestRule.setContent {
+            FakeHomeScreen(homeViewModel = homeViewModel, scaffoldState = scaffoldState)
+        }
+
+        runBlocking {
+            delay(200)
+            homeViewModel.apply {
+                assertEquals(
+                    scaffoldState.snackbarHostState.currentSnackbarData != null,
+                    true
+                )
+                composeTestRule
+                    .onAllNodesWithText("인터넷에 연결되지 않았습니다.")
+                    .onFirst()
+                    .assertIsDisplayed()
             }
         }
     }

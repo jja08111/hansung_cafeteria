@@ -9,10 +9,25 @@ import kotlinx.coroutines.withContext
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import java.lang.Exception
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class HansungWebScraper {
+    companion object {
+        const val URL = "https://www.hansung.ac.kr/hansung/1920/subview.do"
+    }
+
+    private suspend fun getCafeteriaSite(testUrl: String? = null): Document {
+        return withContext(Dispatchers.IO) {
+            try {
+                Jsoup.connect(testUrl ?: URL).get()
+            } catch (e: Exception) {
+                null
+            }
+        } ?: throw InternetNotConnectedException()
+    }
+
     /**
      * 식단 정보를 스크래핑 해온후 매핑 객체를 반환한다.
      *
@@ -21,16 +36,8 @@ class HansungWebScraper {
      * 2. tbody에서 tr들을 찾는다.
      * 3. tr에서 th가 있으면 해당 날짜이고 없으면 이전과 동일한 날짜이다.(rowspan=2임)
      */
-    suspend fun searchCafeteria(url: String? = null): List<DailyMenuModel>? {
-        val doc = withContext(Dispatchers.IO) {
-            try {
-                Jsoup.connect(
-                    url ?: "https://www.hansung.ac.kr/hansung/1920/subview.do"
-                ).get()
-            } catch (e: Exception) {
-                null
-            }
-        } ?: throw InternetNotConnectedException()
+    suspend fun searchCafeteria(testUrl: String? = null): List<DailyMenuModel>? {
+        val doc = getCafeteriaSite(testUrl = testUrl)
 
         val tableBody = doc.getElementsByTag("tbody").first()
         val tableRows = tableBody?.children()

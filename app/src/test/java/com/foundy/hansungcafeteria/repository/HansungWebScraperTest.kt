@@ -13,7 +13,7 @@ class HansungWebScraperTest : FunSpec({
     test("searchCafeteria returns an empty Menus if date is holiday") {
         // 3월 1일이 포함된 기간이다.
         val url = "https://www.hansung.ac.kr/hansung/1920/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRmhhbnN1bmclMkYyJTJGdmlldy5kbyUzRm1vbmRheSUzRDIwMjIuMDMuMDclMjZ3ZWVrJTNEcHJlJTI2"
-        val dailyMenus = HansungWebScraper().searchCafeteria(url = url)
+        val dailyMenus = HansungWebScraper().searchCafeteria(testUrl = url)
 
         dailyMenus?.get(0)?.menuDivisions?.forEach {
             it.menus.shouldNotBeEmpty()
