@@ -159,7 +159,8 @@ fun TabBar(tabs: List<TabItem>, homeViewModel: HomeViewModel) {
             TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
             )
-        }) {
+        }
+    ) {
         tabs.forEachIndexed { index, tab ->
             Tab(
                 text = { Text(tab.weekdayString()) },
