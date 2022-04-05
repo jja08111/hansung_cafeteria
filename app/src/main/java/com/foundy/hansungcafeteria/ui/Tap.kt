@@ -7,17 +7,15 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.foundy.hansungcafeteria.model.Menu
-import com.foundy.hansungcafeteria.model.MenuDivision
 import com.foundy.hansungcafeteria.ui.components.MenuDivisionCard
+import com.foundy.hansungcafeteria.ui.components.TapViewShimmer
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import kotlinx.coroutines.launch
 import org.joda.time.DateTimeConstants
-import java.lang.Exception
+import kotlin.Exception
 
 val tabs = listOf(
     TabItem.Monday,
@@ -35,39 +33,46 @@ fun HansungHorizontalPager(homeViewModel: HomeViewModel) {
         count = tabs.size,
         modifier = Modifier.fillMaxHeight()
     ) {
-        tabs[it].screen(homeViewModel)
+        if (homeViewModel.dailyMenus.isEmpty()) {
+            TapViewShimmer()
+        } else {
+            tabs[it].view(homeViewModel)
+        }
     }
 }
 
+/**
+ * @param homeViewModel [HomeViewModel.dailyMenus]는 반드시 비어있으면 안된다.
+ */
 @Composable
 fun TapView(weekday: Int, homeViewModel: HomeViewModel) {
     val dailyMenuList = remember { homeViewModel.dailyMenus }
 
     if (dailyMenuList.isEmpty()) {
-        Text("로딩중...")
-    } else {
-        val scrollState = rememberScrollState()
-        val dailyMenu = dailyMenuList[weekday]
+        throw Exception("비어있는 식단 리스트를 가진 HomeViewModel을 전달했습니다. 초기화가 되어있는 경우만 이용하세요.")
+    }
 
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .verticalScroll(scrollState),
+    val scrollState = rememberScrollState()
+    val dailyMenu = dailyMenuList[weekday]
+
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth()
+            .verticalScroll(scrollState),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    dailyMenu.date.toString("yyyy년 M월 d일"),
-                    style = MaterialTheme.typography.subtitle1.copy(
-                        color = MaterialTheme.colors.onBackground.copy(0.6F)
-                    ),
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                for (division in dailyMenu.menuDivisions) {
-                    MenuDivisionCard(division)
-                }
+            Text(
+                dailyMenu.date.toString("yyyy년 M월 d일"),
+                style = MaterialTheme.typography.subtitle1.copy(
+                    color = MaterialTheme.colors.onBackground.copy(0.6F)
+                ),
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            for (division in dailyMenu.menuDivisions) {
+                MenuDivisionCard(division)
             }
         }
     }
@@ -75,7 +80,7 @@ fun TapView(weekday: Int, homeViewModel: HomeViewModel) {
 
 sealed class TabItem(
     private val weekday: Int,
-    val screen: @Composable (homeViewModel: HomeViewModel) -> Unit
+    val view: @Composable (homeViewModel: HomeViewModel) -> Unit
 ) {
     fun weekdayString(): String = weekday.toWeekLocaleShort()
 
@@ -149,19 +154,4 @@ fun Int.toWeekLocaleShort(): String {
         DateTimeConstants.SUNDAY -> "일"
         else -> throw Exception("잘못된 값을 전달했습니다. 요일을 맞게 전달했는지 확인하세요.")
     }
-}
-
-@Preview(name = "DivisionCard")
-@Composable
-fun MenuDivisionCardPreview() {
-    MenuDivisionCard(
-        division = MenuDivision(
-            name = "찌개&분식",
-            menus = listOf(
-                Menu("메뉴1", 1000),
-                Menu("메뉴2", 5000),
-                Menu("메뉴3", 5200),
-            )
-        )
-    )
 }
