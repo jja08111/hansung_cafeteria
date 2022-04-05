@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope.coroutineContext
 import kotlinx.coroutines.runBlocking
 import org.joda.time.DateTime
@@ -16,6 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@OptIn(DelicateCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class HomeViewModelTest {
     @get:Rule
@@ -35,7 +37,7 @@ class HomeViewModelTest {
             "https://www.hansung.ac.kr/hansung/1920/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRmhhbnN1bmclMkYyJTJGdmlldy5kbyUzRm1vbmRheSUzRDIwMjIuMDQuMDQlMjZ3ZWVrJTNEcHJlJTI2"
     }
 
-    @OptIn(ExperimentalPagerApi::class, kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalPagerApi::class)
     @Test
     fun currentPageShouldBeZero_whenDateOfFirstDataIsTomorrow() {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 3, 27, 14, 0).millis)
@@ -57,7 +59,7 @@ class HomeViewModelTest {
         }
     }
 
-    @OptIn(ExperimentalPagerApi::class, kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalPagerApi::class)
     @Test
     fun currentPageShouldBeZero_whenTodayIsMondayAndDataInRange() {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 3, 28, 14, 0).millis)
@@ -79,7 +81,7 @@ class HomeViewModelTest {
         }
     }
 
-    @OptIn(ExperimentalPagerApi::class, kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalPagerApi::class)
     @Test
     fun currentPageShouldBeOne_whenTodayIsTuesdayAndDataInRange() {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 3, 29, 14, 0).millis)
@@ -101,7 +103,7 @@ class HomeViewModelTest {
         }
     }
 
-    @OptIn(ExperimentalPagerApi::class, kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalPagerApi::class)
     @Test
     fun currentPageShouldBeFour_whenDateOfLastDataIsYesterday() {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 4, 4, 14, 0).millis)
