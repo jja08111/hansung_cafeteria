@@ -33,9 +33,17 @@ fun HansungHorizontalPager(homeViewModel: HomeViewModel) {
         count = tabs.size,
         modifier = Modifier.fillMaxHeight()
     ) {
-        if (homeViewModel.dailyMenus.isEmpty()) {
+        if (!homeViewModel.isConnected.value) {
+            InternetNotConnectedPage(
+                onClickRefresh = {
+                    homeViewModel.updateDailyMenus()
+                }
+            )
+        }
+        else if (homeViewModel.dailyMenus.isEmpty()) {
             TapViewShimmer()
-        } else {
+        }
+        else {
             tabs[it].view(homeViewModel)
         }
     }

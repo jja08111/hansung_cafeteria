@@ -53,7 +53,7 @@ class HomeViewModelTest {
 
         runBlocking {
             homeViewModel.apply {
-                job.join()
+                job?.join()
                 assertEquals(pagerState.currentPage, 0)
             }
         }
@@ -75,7 +75,7 @@ class HomeViewModelTest {
 
         runBlocking {
             homeViewModel.apply {
-                job.join()
+                job?.join()
                 assertEquals(pagerState.currentPage, 0)
             }
         }
@@ -97,7 +97,7 @@ class HomeViewModelTest {
 
         runBlocking {
             homeViewModel.apply {
-                job.join()
+                job?.join()
                 assertEquals(pagerState.currentPage, 1)
             }
         }
@@ -119,7 +119,7 @@ class HomeViewModelTest {
 
         runBlocking {
             homeViewModel.apply {
-                job.join()
+                job?.join()
                 assertEquals(pagerState.currentPage, 4)
             }
         }

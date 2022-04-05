@@ -1,9 +1,11 @@
 package com.foundy.hansungcafeteria.ui
 
 import androidx.annotation.VisibleForTesting
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.material.ScaffoldState
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.foundy.hansungcafeteria.exception.InternetNotConnectedException
 import com.foundy.hansungcafeteria.model.DailyMenuModel
 import com.foundy.hansungcafeteria.repository.HansungWebScraper
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -17,6 +19,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 class HomeViewModel(
+    val scaffoldState: ScaffoldState,
     @VisibleForTesting private val searchUrl: String? = null,
     @VisibleForTesting private val coroutineContext: CoroutineContext = EmptyCoroutineContext
 ) : ViewModel() {
@@ -31,8 +34,11 @@ class HomeViewModel(
     private val _dailyMenus = mutableStateListOf<DailyMenuModel>()
     val dailyMenus: List<DailyMenuModel> = _dailyMenus
 
+    private val _isConnected = mutableStateOf(true)
+    val isConnected: State<Boolean> = _isConnected
+
     @VisibleForTesting
-    val job: Job
+    var job: Job? = null
 
     /**
      * 식단 정보의 월요일부터 금요일까지의 기간을 문자열로 나타낸다.
@@ -48,10 +54,20 @@ class HomeViewModel(
         }
 
     init {
+        updateDailyMenus()
+    }
+
+    fun updateDailyMenus() {
         job = viewModelScope.launch(context = coroutineContext) {
-            hansungWebScraper.searchCafeteria(searchUrl)?.let {
-                _dailyMenus.addAll(adaptWeekDayToDateConstant(it))
-                moveWeekdayTap()
+            try {
+                hansungWebScraper.searchCafeteria(searchUrl)?.let {
+                    _isConnected.value = true
+                    _dailyMenus.addAll(adaptWeekDayToDateConstant(it))
+                    moveWeekdayTap()
+                }
+            } catch (e: InternetNotConnectedException) {
+                _isConnected.value = false
+                scaffoldState.snackbarHostState.showSnackbar("정보 얻기 실패. 인터넷 연결을 확인해주세요.")
             }
         }
     }

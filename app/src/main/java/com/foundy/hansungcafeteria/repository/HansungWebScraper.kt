@@ -1,5 +1,6 @@
 package com.foundy.hansungcafeteria.repository
 
+import com.foundy.hansungcafeteria.exception.InternetNotConnectedException
 import com.foundy.hansungcafeteria.model.DailyMenuModel
 import com.foundy.hansungcafeteria.model.Menu
 import com.foundy.hansungcafeteria.model.MenuDivision
@@ -8,6 +9,7 @@ import kotlinx.coroutines.withContext
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
 import org.jsoup.Jsoup
+import java.lang.Exception
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class HansungWebScraper {
@@ -19,13 +21,17 @@ class HansungWebScraper {
      * 2. tbody에서 tr들을 찾는다.
      * 3. tr에서 th가 있으면 해당 날짜이고 없으면 이전과 동일한 날짜이다.(rowspan=2임)
      */
-    // TODO: 네트워크 연결 실패 및 기타 예외처리하기 
     suspend fun searchCafeteria(url: String? = null): List<DailyMenuModel>? {
         val doc = withContext(Dispatchers.IO) {
-            Jsoup.connect(
-                url ?: "https://www.hansung.ac.kr/hansung/1920/subview.do"
-            ).get()
-        }
+            try {
+                Jsoup.connect(
+                    url ?: "https://www.hansung.ac.kr/hansung/1920/subview.do"
+                ).get()
+            } catch (e: Exception) {
+                null
+            }
+        } ?: throw InternetNotConnectedException()
+
         val tableBody = doc.getElementsByTag("tbody").first()
         val tableRows = tableBody?.children()
         val result = mutableListOf<DailyMenuModel>()

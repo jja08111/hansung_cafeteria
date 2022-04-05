@@ -16,9 +16,11 @@ import com.google.accompanist.pager.*
 @Composable
 fun HansungCafeteria() {
     HansungCafeteriaTheme {
-        val homeViewModel by remember { mutableStateOf(HomeViewModel()) }
+        val scaffoldState = rememberScaffoldState()
+        val homeViewModel by remember { mutableStateOf(HomeViewModel(scaffoldState)) }
 
         Scaffold(
+            scaffoldState = scaffoldState,
             topBar = { HansungTopAppBar(homeViewModel = homeViewModel) }
         ) {
             Column {
