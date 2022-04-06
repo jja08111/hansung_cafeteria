@@ -16,6 +16,7 @@ import io.mockk.every
 import io.mockk.mockkStatic
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope.coroutineContext
+import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.joda.time.DateTime
@@ -162,7 +163,7 @@ class HomeViewModelTest {
         }
 
         runBlocking {
-            delay(200)
+            awaitFrame()
             homeViewModel.apply {
                 assertEquals(
                     scaffoldState.snackbarHostState.currentSnackbarData != null,
