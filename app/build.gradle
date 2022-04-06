@@ -73,7 +73,6 @@ dependencies {
 
     implementation 'org.jsoup:jsoup:1.14.3'
 
-    String mockk_version = "1.12.3"
     testImplementation "io.mockk:mockk:$mockk_version"
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
     testImplementation 'io.kotlintest:kotlintest-runner-junit5:3.3.0'
