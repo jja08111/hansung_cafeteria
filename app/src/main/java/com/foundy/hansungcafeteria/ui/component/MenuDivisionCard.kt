@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.foundy.hansungcafeteria.model.Menu
@@ -31,7 +32,11 @@ fun MenuDivisionCard(division: MenuDivision) {
                     ) {
                         Text(
                             menu.name,
-                            modifier = Modifier.padding(end = 8.dp)
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp),
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
                         )
                         Text(
                             "${menu.priceWithComma}원",
