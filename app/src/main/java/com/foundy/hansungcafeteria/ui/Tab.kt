@@ -17,17 +17,9 @@ import kotlinx.coroutines.launch
 import org.joda.time.DateTimeConstants
 import kotlin.Exception
 
-val tabs = listOf(
-    TabItem.Monday,
-    TabItem.Tuesday,
-    TabItem.Wednesday,
-    TabItem.Thursday,
-    TabItem.Friday
-)
-
 @ExperimentalPagerApi
 @Composable
-fun HansungHorizontalPager(homeViewModel: HomeViewModel) {
+fun HansungHorizontalPager(tabs: List<TabItem>, homeViewModel: HomeViewModel) {
     HorizontalPager(
         state = homeViewModel.pagerState,
         count = tabs.size,
@@ -42,76 +34,56 @@ fun HansungHorizontalPager(homeViewModel: HomeViewModel) {
         } else if (homeViewModel.dailyMenus.isEmpty()) {
             TabViewShimmer()
         } else {
-            tabs[it].view(homeViewModel)
-        }
-    }
-}
-
-/**
- * @param homeViewModel [HomeViewModel.dailyMenus]는 반드시 비어있으면 안된다.
- */
-@Composable
-fun TabView(weekday: Int, homeViewModel: HomeViewModel) {
-    if (homeViewModel.dailyMenus.isEmpty()) {
-        throw Exception("비어있는 식단 리스트를 가진 HomeViewModel을 전달했습니다. 초기화가 되어있는 경우만 이용하세요.")
-    }
-
-    val scrollState = rememberScrollState()
-    val dailyMenu = homeViewModel.dailyMenus[weekday]
-
-    Box(
-        modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth()
-            .verticalScroll(scrollState),
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                dailyMenu.date.toString("yyyy년 M월 d일"),
-                style = MaterialTheme.typography.subtitle1.copy(
-                    color = MaterialTheme.colors.onBackground.copy(0.6F)
-                ),
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            for (division in dailyMenu.menuDivisions) {
-                MenuDivisionCard(division)
-            }
+            tabs[it].View(homeViewModel)
         }
     }
 }
 
 sealed class TabItem(
     private val weekday: Int,
-    val view: @Composable (homeViewModel: HomeViewModel) -> Unit
 ) {
+    object Monday : TabItem(DateTimeConstants.MONDAY)
+    object Tuesday : TabItem(DateTimeConstants.TUESDAY)
+    object Wednesday : TabItem(DateTimeConstants.WEDNESDAY)
+    object Thursday : TabItem(DateTimeConstants.THURSDAY)
+    object Friday : TabItem(DateTimeConstants.FRIDAY)
+
     fun weekdayString(): String = weekday.toWeekLocaleShort()
 
-    object Monday :
-        TabItem(
-            DateTimeConstants.MONDAY,
-            { TabView(weekday = DateTimeConstants.MONDAY, homeViewModel = it) })
+    /**
+     * @param homeViewModel [HomeViewModel.dailyMenus]는 반드시 초기화 되어있어야 한다.
+     */
+    @Composable
+    fun View(homeViewModel: HomeViewModel) {
+        if (homeViewModel.dailyMenus.isEmpty()) {
+            throw Exception("비어있는 식단 리스트를 가진 HomeViewModel을 전달했습니다. 초기화가 되어있는 경우만 이용하세요.")
+        }
 
-    object Tuesday :
-        TabItem(
-            DateTimeConstants.TUESDAY,
-            { TabView(weekday = DateTimeConstants.TUESDAY, homeViewModel = it) })
+        val scrollState = rememberScrollState()
+        val dailyMenu = homeViewModel.dailyMenus[weekday]
 
-    object Wednesday :
-        TabItem(
-            DateTimeConstants.WEDNESDAY,
-            { TabView(weekday = DateTimeConstants.WEDNESDAY, homeViewModel = it) })
-
-    object Thursday :
-        TabItem(
-            DateTimeConstants.THURSDAY,
-            { TabView(weekday = DateTimeConstants.THURSDAY, homeViewModel = it) })
-
-    object Friday :
-        TabItem(
-            DateTimeConstants.FRIDAY,
-            { TabView(weekday = DateTimeConstants.FRIDAY, homeViewModel = it) })
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .verticalScroll(scrollState),
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    dailyMenu.date.toString("yyyy년 M월 d일"),
+                    style = MaterialTheme.typography.subtitle1.copy(
+                        color = MaterialTheme.colors.onBackground.copy(0.6F)
+                    ),
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                for (division in dailyMenu.menuDivisions) {
+                    MenuDivisionCard(division)
+                }
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)

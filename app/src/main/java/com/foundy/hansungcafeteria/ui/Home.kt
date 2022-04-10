@@ -18,6 +18,15 @@ fun HansungCafeteria() {
     HansungCafeteriaTheme {
         val scaffoldState = rememberScaffoldState()
         val homeViewModel by remember { mutableStateOf(HomeViewModel(scaffoldState)) }
+        val tabs = remember {
+            listOf(
+                TabItem.Monday,
+                TabItem.Tuesday,
+                TabItem.Wednesday,
+                TabItem.Thursday,
+                TabItem.Friday
+            )
+        }
 
         Scaffold(
             scaffoldState = scaffoldState,
@@ -26,6 +35,7 @@ fun HansungCafeteria() {
             Column {
                 TabBar(tabs = tabs, homeViewModel = homeViewModel)
                 HansungHorizontalPager(
+                    tabs = tabs,
                     homeViewModel = homeViewModel
                 )
             }
