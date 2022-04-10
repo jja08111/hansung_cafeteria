@@ -39,11 +39,9 @@ fun HansungHorizontalPager(homeViewModel: HomeViewModel) {
                     homeViewModel.updateDailyMenus()
                 }
             )
-        }
-        else if (homeViewModel.dailyMenus.isEmpty()) {
+        } else if (homeViewModel.dailyMenus.isEmpty()) {
             TabViewShimmer()
-        }
-        else {
+        } else {
             tabs[it].view(homeViewModel)
         }
     }
@@ -54,14 +52,12 @@ fun HansungHorizontalPager(homeViewModel: HomeViewModel) {
  */
 @Composable
 fun TabView(weekday: Int, homeViewModel: HomeViewModel) {
-    val dailyMenuList = remember { homeViewModel.dailyMenus }
-
-    if (dailyMenuList.isEmpty()) {
+    if (homeViewModel.dailyMenus.isEmpty()) {
         throw Exception("비어있는 식단 리스트를 가진 HomeViewModel을 전달했습니다. 초기화가 되어있는 경우만 이용하세요.")
     }
 
     val scrollState = rememberScrollState()
-    val dailyMenu = dailyMenuList[weekday]
+    val dailyMenu = homeViewModel.dailyMenus[weekday]
 
     Box(
         modifier = Modifier
