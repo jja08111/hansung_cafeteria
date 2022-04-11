@@ -3,21 +3,28 @@ package com.foundy.hansungcafeteria.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.foundy.hansungcafeteria.ui.theme.HansungCafeteriaTheme
 import com.google.accompanist.pager.*
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HansungCafeteria() {
     HansungCafeteriaTheme {
-        val scaffoldState = rememberScaffoldState()
-        val homeViewModel by remember { mutableStateOf(HomeViewModel(scaffoldState)) }
+        val homeViewModel by remember { mutableStateOf(HomeViewModel()) }
+
+        HomeView(homeViewModel = homeViewModel)
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun HomeView(homeViewModel: HomeViewModel) {
+    Scaffold(
+        scaffoldState = homeViewModel.scaffoldState,
+        topBar = { HansungTopAppBar(homeViewModel = homeViewModel) }
+    ) {
         val tabs = remember {
             listOf(
                 TabItem.Monday,
@@ -28,17 +35,12 @@ fun HansungCafeteria() {
             )
         }
 
-        Scaffold(
-            scaffoldState = scaffoldState,
-            topBar = { HansungTopAppBar(homeViewModel = homeViewModel) }
-        ) {
-            Column {
-                TabBar(tabs = tabs, homeViewModel = homeViewModel)
-                HansungHorizontalPager(
-                    tabs = tabs,
-                    homeViewModel = homeViewModel
-                )
-            }
+        Column {
+            TabBar(tabs = tabs, homeViewModel = homeViewModel)
+            HansungHorizontalPager(
+                tabs = tabs,
+                homeViewModel = homeViewModel
+            )
         }
     }
 }

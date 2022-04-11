@@ -1,7 +1,10 @@
 package com.foundy.hansungcafeteria.ui
 
 import androidx.annotation.VisibleForTesting
+import androidx.compose.material.DrawerState
+import androidx.compose.material.DrawerValue
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,7 +22,6 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 class HomeViewModel(
-    val scaffoldState: ScaffoldState,
     @VisibleForTesting private val searchUrl: String? = null,
     @VisibleForTesting private val coroutineContext: CoroutineContext = EmptyCoroutineContext
 ) : ViewModel() {
@@ -37,8 +39,11 @@ class HomeViewModel(
     private val _isConnected = mutableStateOf(true)
     val isConnected: State<Boolean> = _isConnected
 
+    val scaffoldState = ScaffoldState(DrawerState(DrawerValue.Closed), SnackbarHostState())
+
     @VisibleForTesting
     var job: Job? = null
+        private set
 
     /**
      * 식단 정보의 월요일부터 금요일까지의 기간을 문자열로 나타낸다.
