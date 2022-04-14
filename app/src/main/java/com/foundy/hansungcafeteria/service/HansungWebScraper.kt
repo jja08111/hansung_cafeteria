@@ -1,4 +1,4 @@
-package com.foundy.hansungcafeteria.repository
+package com.foundy.hansungcafeteria.service
 
 import com.foundy.hansungcafeteria.exception.InternetNotConnectedException
 import com.foundy.hansungcafeteria.model.DailyMenuModel
@@ -13,10 +13,8 @@ import org.jsoup.nodes.Document
 import java.lang.Exception
 
 @Suppress("BlockingMethodInNonBlockingContext")
-class HansungWebScraper {
-    companion object {
-        const val URL = "https://www.hansung.ac.kr/hansung/1920/subview.do"
-    }
+object HansungWebScraper {
+    private const val URL = "https://www.hansung.ac.kr/hansung/1920/subview.do"
 
     private suspend fun getCafeteriaSite(testUrl: String? = null): Document {
         return withContext(Dispatchers.IO) {

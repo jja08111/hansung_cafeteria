@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.foundy.hansungcafeteria.exception.InternetNotConnectedException
+import com.foundy.hansungcafeteria.repository.DailyMenuRepositoryImpl
 import com.google.accompanist.pager.ExperimentalPagerApi
 import io.mockk.every
 import io.mockk.mockkStatic
@@ -51,7 +52,7 @@ class HomeViewModelTest {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 3, 27, 14, 0).millis)
 
         val homeViewModel = HomeViewModel(
-            searchUrl = URL,
+            DailyMenuRepositoryImpl(testUrl = URL),
             coroutineContext = coroutineContext
         )
 
@@ -73,7 +74,7 @@ class HomeViewModelTest {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 3, 28, 14, 0).millis)
 
         val homeViewModel = HomeViewModel(
-            searchUrl = URL,
+            DailyMenuRepositoryImpl(testUrl = URL),
             coroutineContext = coroutineContext
         )
 
@@ -95,7 +96,7 @@ class HomeViewModelTest {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 3, 29, 14, 0).millis)
 
         val homeViewModel = HomeViewModel(
-            searchUrl = URL,
+            DailyMenuRepositoryImpl(testUrl = URL),
             coroutineContext = coroutineContext
         )
 
@@ -117,7 +118,7 @@ class HomeViewModelTest {
         DateTimeUtils.setCurrentMillisFixed(DateTime(2022, 4, 4, 14, 0).millis)
 
         val homeViewModel = HomeViewModel(
-            searchUrl = URL,
+            DailyMenuRepositoryImpl(testUrl = URL),
             coroutineContext = coroutineContext
         )
 
@@ -140,8 +141,8 @@ class HomeViewModelTest {
         every { Jsoup.connect(URL) } throws InternetNotConnectedException()
 
         val homeViewModel = HomeViewModel(
-            searchUrl = URL,
-            coroutineContext = coroutineContext,
+            DailyMenuRepositoryImpl(testUrl = URL),
+            coroutineContext = coroutineContext
         )
 
         composeTestRule.setContent {

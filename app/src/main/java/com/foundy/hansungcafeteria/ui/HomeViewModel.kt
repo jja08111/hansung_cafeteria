@@ -10,7 +10,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foundy.hansungcafeteria.exception.InternetNotConnectedException
 import com.foundy.hansungcafeteria.model.DailyMenuModel
-import com.foundy.hansungcafeteria.repository.HansungWebScraper
+import com.foundy.hansungcafeteria.repository.DailyMenuRepository
+import com.foundy.hansungcafeteria.repository.DailyMenuRepositoryImpl
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.Job
@@ -22,11 +23,9 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 class HomeViewModel(
-    @VisibleForTesting private val searchUrl: String? = null,
+    private val dailyMenuRepository: DailyMenuRepository = DailyMenuRepositoryImpl(),
     @VisibleForTesting private val coroutineContext: CoroutineContext = EmptyCoroutineContext
 ) : ViewModel() {
-    private val hansungWebScraper = HansungWebScraper()
-
     @OptIn(ExperimentalPagerApi::class)
     val pagerState = PagerState()
 
@@ -65,7 +64,7 @@ class HomeViewModel(
     fun updateDailyMenus() {
         job = viewModelScope.launch(context = coroutineContext) {
             try {
-                hansungWebScraper.searchCafeteria(searchUrl)?.let {
+                dailyMenuRepository.getDailyMenus()?.let {
                     _isConnected.value = true
                     _dailyMenus.addAll(adaptWeekDayToDateConstant(it))
                     moveWeekdayTap()
