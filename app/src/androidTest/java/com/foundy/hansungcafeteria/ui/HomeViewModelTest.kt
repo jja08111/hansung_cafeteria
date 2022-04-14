@@ -61,11 +61,10 @@ class HomeViewModelTest {
         }
 
         runBlocking {
-            homeViewModel.apply {
-                job?.join()
-                assertEquals(pagerState.currentPage, 0)
-            }
+            homeViewModel.job?.join()
         }
+
+        assertEquals(homeViewModel.pagerState.currentPage, 0)
     }
 
     @OptIn(ExperimentalPagerApi::class)
@@ -83,11 +82,10 @@ class HomeViewModelTest {
         }
 
         runBlocking {
-            homeViewModel.apply {
-                job?.join()
-                assertEquals(pagerState.currentPage, 0)
-            }
+            homeViewModel.job?.join()
         }
+
+        assertEquals(homeViewModel.pagerState.currentPage, 0)
     }
 
     @OptIn(ExperimentalPagerApi::class)
@@ -105,11 +103,10 @@ class HomeViewModelTest {
         }
 
         runBlocking {
-            homeViewModel.apply {
-                job?.join()
-                assertEquals(pagerState.currentPage, 1)
-            }
+            homeViewModel.job?.join()
         }
+
+        assertEquals(homeViewModel.pagerState.currentPage, 1)
     }
 
     @OptIn(ExperimentalPagerApi::class)
@@ -127,11 +124,10 @@ class HomeViewModelTest {
         }
 
         runBlocking {
-            homeViewModel.apply {
-                job?.join()
-                assertEquals(pagerState.currentPage, 4)
-            }
+            homeViewModel.job?.join()
         }
+
+        assertEquals(homeViewModel.pagerState.currentPage, 4)
     }
 
     @OptIn(ExperimentalPagerApi::class)
@@ -151,16 +147,15 @@ class HomeViewModelTest {
 
         runBlocking {
             awaitFrame()
-            homeViewModel.apply {
-                assertEquals(
-                    scaffoldState.snackbarHostState.currentSnackbarData != null,
-                    true
-                )
-                composeTestRule
-                    .onAllNodesWithText("인터넷에 연결할 수 없습니다.")
-                    .onFirst()
-                    .assertIsDisplayed()
-            }
         }
+
+        assertEquals(
+            homeViewModel.scaffoldState.snackbarHostState.currentSnackbarData != null,
+            true
+        )
+        composeTestRule
+            .onAllNodesWithText("인터넷에 연결할 수 없습니다.")
+            .onFirst()
+            .assertIsDisplayed()
     }
 }
