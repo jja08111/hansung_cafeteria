@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import com.foundy.hansungcafeteria.exception.InternetNotConnectedException
 import com.foundy.hansungcafeteria.model.DailyMenuModel
 import com.foundy.hansungcafeteria.repository.DailyMenuRepository
-import com.foundy.hansungcafeteria.repository.DailyMenuRepositoryImpl
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.Job
@@ -23,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 class HomeViewModel(
-    private val dailyMenuRepository: DailyMenuRepository = DailyMenuRepositoryImpl(),
+    private val dailyMenuRepository: DailyMenuRepository = DailyMenuRepository(),
     @VisibleForTesting private val coroutineContext: CoroutineContext = EmptyCoroutineContext
 ) : ViewModel() {
     @OptIn(ExperimentalPagerApi::class)
