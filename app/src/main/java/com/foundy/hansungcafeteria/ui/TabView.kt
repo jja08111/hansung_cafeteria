@@ -26,7 +26,7 @@ fun HansungHorizontalPager(tabs: List<TabItem>, homeViewModel: HomeViewModel) {
         modifier = Modifier.fillMaxHeight()
     ) {
         if (!homeViewModel.isConnected.value) {
-            InternetNotConnectedPage(
+            InternetNotConnectedView(
                 onClickRefresh = {
                     homeViewModel.updateDailyMenus()
                 }

@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun InternetNotConnectedPage(onClickRefresh: () -> Unit) {
+fun InternetNotConnectedView(onClickRefresh: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -37,6 +37,6 @@ fun InternetNotConnectedPage(onClickRefresh: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun InternetNotConnectedPagePreview() {
-    InternetNotConnectedPage(onClickRefresh = {})
+fun InternetNotConnectedViewPreview() {
+    InternetNotConnectedView(onClickRefresh = {})
 }
