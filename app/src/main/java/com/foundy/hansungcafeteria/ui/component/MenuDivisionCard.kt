@@ -23,29 +23,39 @@ fun MenuDivisionCard(division: MenuDivision) {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             Column {
-                for (menu in division.menus) {
-                    Row(
-                        modifier = Modifier
-                            .padding(vertical = 4.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            menu.name,
+                if (division.menus.isEmpty()) {
+                    Text(
+                        "등록된 메뉴 정보가 없습니다",
+                        modifier = Modifier.padding(end = 8.dp),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        color = MaterialTheme.colors.onSurface.copy(alpha = 0.6F)
+                    )
+                } else {
+                    for (menu in division.menus) {
+                        Row(
                             modifier = Modifier
-                                .weight(1f)
-                                .padding(end = 8.dp),
-                            overflow = TextOverflow.Ellipsis,
-                            maxLines = 1
-                        )
-                        Text(
-                            "${menu.priceWithComma}원",
-                            style = MaterialTheme.typography.body1.copy(
-                                color = MaterialTheme.colors.onSurface.copy(
-                                    alpha = 0.6F
+                                .padding(vertical = 4.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                menu.name,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(end = 8.dp),
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1
+                            )
+                            Text(
+                                "${menu.priceWithComma}원",
+                                style = MaterialTheme.typography.body1.copy(
+                                    color = MaterialTheme.colors.onSurface.copy(
+                                        alpha = 0.6F
+                                    )
                                 )
                             )
-                        )
+                        }
                     }
                 }
             }
@@ -64,6 +74,18 @@ fun MenuDivisionCardPreview() {
                 Menu("메뉴2", 5000),
                 Menu("메뉴3", 5200),
             )
+        )
+    )
+}
+
+
+@Preview(name = "EmptyDivisionCard")
+@Composable
+fun EmptyMenuDivisionCardPreview() {
+    MenuDivisionCard(
+        division = MenuDivision(
+            name = "찌개&분식",
+            menus = emptyList()
         )
     )
 }
