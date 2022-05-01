@@ -54,6 +54,9 @@ object HansungWebScraper {
             val dateTime =
                 if (rowDateTimeString != null) formatter.parseDateTime(rowDateTimeString) else null
             val tableDataList = tableRow.getElementsByTag("td")
+
+            if (tableDataList.size < 2) continue
+
             val rowMenus = tableDataList[1].text().split(" ")
             val divisionName = tableDataList[0].text()
             val menus = mutableListOf<Menu>()
