@@ -16,7 +16,7 @@ import java.lang.Exception
 object HansungWebScraper {
     private const val URL = "https://www.hansung.ac.kr/hansung/1920/subview.do"
 
-    private suspend fun getCafeteriaSite(testUrl: String? = null): Document {
+    private suspend fun connectCafeteria(testUrl: String? = null): Document {
         return withContext(Dispatchers.IO) {
             try {
                 Jsoup.connect(testUrl ?: URL).get()
@@ -35,7 +35,7 @@ object HansungWebScraper {
      * 3. tr에서 th가 있으면 해당 날짜이고 없으면 이전과 동일한 날짜이다.(rowspan=2임)
      */
     suspend fun searchCafeteria(testUrl: String? = null): List<DailyMenuModel>? {
-        val doc = getCafeteriaSite(testUrl = testUrl)
+        val doc = connectCafeteria(testUrl = testUrl)
 
         val tableBody = doc.getElementsByTag("tbody").first()
         val tableRows = tableBody?.children()
