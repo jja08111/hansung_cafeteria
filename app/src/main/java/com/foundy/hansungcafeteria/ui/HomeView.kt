@@ -48,7 +48,7 @@ fun HomeView(homeViewModel: HomeViewModel) {
 @Composable
 fun HansungTopAppBar(homeViewModel: HomeViewModel) {
     TopAppBar(contentPadding = PaddingValues(horizontal = 24.dp)) {
-        Text(text = "한성대 학생 식당 ${homeViewModel.currentDuration}")
+        Text(text = "한성대 학생 식당 ${homeViewModel.currentPeriod}")
     }
 }
 

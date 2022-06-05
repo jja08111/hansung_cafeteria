@@ -46,7 +46,7 @@ class HomeViewModel(
     /**
      * 식단 정보의 월요일부터 금요일까지의 기간을 문자열로 나타낸다.
      */
-    val currentDuration: String
+    val currentPeriod: String
         get() {
             if (_dailyMenus.isEmpty()) return ""
             return "(" +
